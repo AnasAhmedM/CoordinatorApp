@@ -5,12 +5,11 @@ import {Icon} from 'react-native-elements'
 import {mainTheme} from '../config/Theme'
 import firebase from "firebase/compat"
 export default function SendReport({navigation, route}) {
-    const [reporter] = useState(route.params?.uid)
+    const [uid] = useState(route.params?.uid)
+    const [reporter] = useState(route.params?.name)
     const [title, setTitle] = useState("")
     const [description, setDiscription] = useState("")
     const [priority, setPriority] = useState("Medium")
-
-    useEffect
 
     let sendReport = () => {
         if(title === "" || description ==="")
@@ -20,9 +19,10 @@ export default function SendReport({navigation, route}) {
             description: description,
             priority: priority,
             reporter: reporter,
-            date: Date.now()
+            date: Date.now(),
+            read: false
         }
-        firebase.database().ref(`Reports`).push(data)
+        firebase.database().ref(`Reports/${uid}`).set(data)
         .catch(error =>{
           console.log(error.message)
         })

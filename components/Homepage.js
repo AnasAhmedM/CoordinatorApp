@@ -48,7 +48,7 @@ export default function HomepageComponent({navigation}) {
                         </Card>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(screens.SendReport, {uid: currentUserData.id})}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(screens.SendReport, {uid: currentUserData.id, name: currentUserData.name})}>
                         <Card style={styles.card} theme={mainTheme}>
                             <Icon name='message' color='black' size={80} paddingTop={10}/>
                             <Text style={styles.cardText}>Send Report</Text>
