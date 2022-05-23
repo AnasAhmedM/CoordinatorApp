@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
-import {ImageBackground, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Card, Avatar, Divider, Title, Button} from 'react-native-paper';
 import {Icon} from 'react-native-elements'
 import {mainTheme} from '../config/Theme'
 import firebase from "firebase/compat"
-import { screens } from '../config/Screens';
+import { Screens } from '../config/Screens';
 
 export default function HomepageComponent({navigation}) {
     const [init, setInit] = useState(false);
@@ -41,49 +41,49 @@ export default function HomepageComponent({navigation}) {
             <View style={styles.dashboard}>
 
                 <View style={styles.cardRow}>
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>alert("View Data")}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(Screens.ViewData)}>
                         <Card style={styles.card} >
                             <Icon name='analytics' color='black' size={80} paddingTop={10}/>
                             <Text style={styles.cardText}>View Data</Text>
                         </Card>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(screens.SendReport, {uid: currentUserData.id, name: currentUserData.name})}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(Screens.SendReport, {uid: currentUserData.id, name: currentUserData.name})}>
                         <Card style={styles.card} theme={mainTheme}>
-                            <Icon name='message' color='black' size={80} paddingTop={10}/>
+                            <Icon name='add-comment' color='black' size={80} paddingTop={10}/>
                             <Text style={styles.cardText}>Send Report</Text>
                         </Card>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.cardRow}>
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>alert("View Report")}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(Screens.Reports, {uid: currentUserData.id})}>
                         <Card style={styles.card} >
-                            <Icon name='blank' color='black' size={80} paddingTop={10}/>
-                            <Text style={styles.cardText}>Text</Text>
+                            <Icon name='email' color='black' size={80} paddingTop={10}/>
+                            <Text style={styles.cardText}>Admin Reports</Text>
                         </Card>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>alert("View Report")}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(Screens.ChangePassword)}>
                         <Card style={styles.card} theme={mainTheme}>
-                            <Icon name='blank' color='black' size={80} paddingTop={10}/>
-                            <Text style={styles.cardText}>Text</Text>
+                            <Icon name='create' color='black' size={80} paddingTop={10}/>
+                            <Text style={styles.cardText}>Password</Text>
                         </Card>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.cardRow}>
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>alert("View Report")}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>navigation.navigate(Screens.ChangeSettings, {data: currentUserData})}>
                         <Card style={styles.card} >
-                            <Icon name='blank' color='black' size={80} paddingTop={10}/>
-                            <Text style={styles.cardText}>Text</Text>
+                            <Icon name='settings' color='black' size={80} paddingTop={10}/>
+                            <Text style={styles.cardText}>Settings</Text>
                         </Card>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>alert("View Report")}>
+                    <TouchableOpacity style={{paddingLeft:16, paddingRight:16}} onPress={()=>handleLogout()}>
                         <Card style={styles.card} theme={mainTheme}>
-                            <Icon name='blank' color='black' size={80} paddingTop={10}/>
-                            <Text style={styles.cardText}>Text</Text>
+                            <Icon name='logout' color='black' size={80} paddingTop={10}/>
+                            <Text style={styles.cardText}>Logout</Text>
                         </Card>
                     </TouchableOpacity>
                 </View>
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
     },
 
     dashboard: {
-        borderWidth: 1,
         borderBottomWidth: 0,
         paddingLeft: 15,
         paddingRight: 15

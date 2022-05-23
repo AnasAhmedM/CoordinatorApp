@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {TextInput, RadioButton, Divider, Title, Button} from 'react-native-paper';
-import {Icon} from 'react-native-elements'
+import {useState} from 'react';
+import {StyleSheet, Text, View, ToastAndroid} from 'react-native';
+import {TextInput, RadioButton, Button} from 'react-native-paper';
 import {mainTheme} from '../config/Theme'
 import firebase from "firebase/compat"
+
 export default function SendReport({navigation, route}) {
     const [uid] = useState(route.params?.uid)
     const [reporter] = useState(route.params?.name)
@@ -11,9 +11,11 @@ export default function SendReport({navigation, route}) {
     const [description, setDiscription] = useState("")
     const [priority, setPriority] = useState("Medium")
 
+    let randomID = () => {
+        return ((Math.floor(Math.random() * 1000) + 1)*(Math.floor(Math.random() * 1000) + 1)).toString()
+    }
+
     let sendReport = () => {
-        if(title === "" || description ==="")
-            return
         let data = {
             title: title,
             description: description,
@@ -22,10 +24,14 @@ export default function SendReport({navigation, route}) {
             date: Date.now(),
             read: false
         }
-        firebase.database().ref(`Reports/${uid}`).set(data)
+        firebase.database().ref(`Reports/${randomID()}`).set(data)
         .catch(error =>{
           console.log(error.message)
         })
+        ToastAndroid.show('Report Sent', ToastAndroid.SHORT)
+        setTitle('')
+        setDiscription('')
+        setPriority('Medium')
     }
 
     return(
@@ -47,6 +53,7 @@ export default function SendReport({navigation, route}) {
                     mode={'outlined'}
                     outlineColor={mainTheme.colors.primary}
                     multiline={true}
+                    numberOfLines={20}
                     />
             </View>
 
@@ -74,7 +81,15 @@ export default function SendReport({navigation, route}) {
             <Text style={{alignSelf: "center"}}>High</Text>
             </View>
 
-            <Button onPress={()=> sendReport()}><Text>Submit</Text></Button>
+            <View style={styles.buttonView}>
+                <Button 
+                    onPress={()=> sendReport()}
+                    theme={mainTheme}
+                    mode='contained'
+                    dark={true}
+                    disabled={title==="" || description===""}
+                ><Text>Submit</Text></Button>
+            </View>
         </View>
     );
 
@@ -82,18 +97,20 @@ export default function SendReport({navigation, route}) {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      borderWidth:1,
-      backgroundColor: mainTheme.colors.background
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: mainTheme.colors.background
     },
 
     inputView: {
-        height:200,
-        width:200,
-        margin: 20,
-        
+        width: '90%',
+        margin: 5,
         backgroundColor: mainTheme.colors,
+    },
+
+    buttonView:{
+        paddingTop: 15
     },
 
     radioButton: {

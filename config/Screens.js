@@ -1,8 +1,13 @@
-const screens = {
+const Screens = {
     Login : "Login",
     Dashboard: "Dashboard",
     Homepage: "Homepage",
-    SendReport: "Send Report"
+    ViewData: "View Data",
+    SendReport: "Send Report",
+    Reports: "Reports",
+    ViewReport: "View Report",
+    ChangePassword: "Change Password",
+    ChangeSettings: "Change Settings"
 }
 
-export {screens}
+export {Screens}

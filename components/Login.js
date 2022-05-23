@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
-import {Avatar, Button, Checkbox, Snackbar, TextInput} from 'react-native-paper';
+import {Button, Checkbox, Snackbar, TextInput} from 'react-native-paper';
 import firebase from "firebase/compat"
 import * as SecureStore from 'expo-secure-store';
 import {mainTheme} from '../config/Theme'
 import { Icon } from 'react-native-elements'
-import { screens } from '../config/Screens';
+import { Screens } from '../config/Screens';
 
 export default function LoginComponent({navigation}) {
     const [email, setEmail] = useState("");
@@ -44,7 +44,7 @@ export default function LoginComponent({navigation}) {
         if (!init) {
             firebase.auth().onAuthStateChanged(user => {
                 if (user) {
-                    navigation.navigate(screens.Dashboard)
+                    navigation.navigate(Screens.Dashboard)
                 }
             });
 
@@ -83,6 +83,7 @@ export default function LoginComponent({navigation}) {
             </View>
             <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                 <Checkbox
+                    color={'black'}
                     status={checked ? 'checked' : 'unchecked'}
                     onPress={() => {
                         setChecked(!checked);
