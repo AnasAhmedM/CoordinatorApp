@@ -39,7 +39,6 @@ export default function App() {
 }
 
 let DashboardComponent = ({navigation}) => {
-  const [currentUserData, setCurrentUserData] = useState({});
   const [init, setInit] = useState(false)
 
   useEffect(() => {
@@ -48,10 +47,7 @@ let DashboardComponent = ({navigation}) => {
           firebase.auth().onAuthStateChanged(user => {
               if (!user) navigation.navigate(Screens.Login)
               else {
-                  firebase.database().ref(`Coordinators/${user.uid}`).on("value", snapshot => {
-                      const value = snapshot.val()
-                      setCurrentUserData(value)
-                  })
+                navigation.navigate(Screens.Dashboard)
               }
           });
       }

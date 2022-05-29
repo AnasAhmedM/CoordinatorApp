@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {Card, Avatar, Divider, Title, Button} from 'react-native-paper';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {Card} from 'react-native-paper';
 import {Icon} from 'react-native-elements'
 import {mainTheme} from '../config/Theme'
 import firebase from "firebase/compat"
@@ -17,21 +17,21 @@ export default function HomepageComponent({navigation}) {
                 setCurrentUserData(snapshot.val());
             })
         }
+
+        navigation.addListener('beforeRemove', (e) => {
+            handleLogout();
+          })
     })
+
 
     let handleLogout =()=> {
         firebase.auth().signOut().catch(err => {
-            console.log(err)
         })
     }
 
     return(
         <View style={styles.home}>
-
-            <TouchableOpacity onPress={()=>alert("Profile")}>
-                <Icon name='person' color='black' size={192}/>
-            </TouchableOpacity>
-
+            <Icon name='person' color='black' size={192}/>
             <Text style={styles.welcomeText}>
                {currentUserData.name}
             </Text>
