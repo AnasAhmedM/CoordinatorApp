@@ -6,29 +6,39 @@ import firebase from "firebase/compat"
 import { getAuth, updateEmail } from "firebase/auth";
 
 export default function ChangeSettings({navigation, route}) {
+    const [oldName, setOldName] = useState(route.params?.data.name);
+    const [oldEmail, setOldEmail] = useState(route.params?.data.email);
+    const [oldUsername, setOldUsername] = useState(route.params?.data.username);
+    const [oldDepartment, setOldDepartment] = useState(route.params?.data.department);
     const [name, setName] = useState(route.params?.data.name);
     const [email, setEmail] = useState(route.params?.data.email);
     const [username, setUsername] = useState(route.params?.data.username);
     const [department, setDepartment] = useState(route.params?.data.department);
     const [id] = useState(route.params?.data.id);
-    const [responsibilities] = useState(route.params?.data.responsibilities);
 
     const handleUpdate = () => {
-        const auth = getAuth();
-        updateEmail(auth.currentUser, email).then(() => {})
-        .catch(err => {
-            showError(err.message)
-        })
-        firebase.database().ref(`Coordinators/${id}`).set(
-          {
-              username : username,
-              name : name,
-              email : email,
-              department : department,
-              responsibilities : responsibilities,
-              id : id,
-          }
-        )
+        if(oldName !== name){
+            firebase.database().ref(`Coordinators/${id}/name`).set(name)
+            .then(() => {setOldName(name)})
+        }
+        if(oldEmail !== email){
+            const auth = getAuth();
+            updateEmail(auth.currentUser, email).then(() => {
+                firebase.database().ref(`Coordinators/${id}/email`).set(email)
+                .then(() => {setOldEmail(email)})
+            })
+            .catch(err => {
+                showError(err.message)
+            })
+        }
+        if(oldUsername !== username){
+            firebase.database().ref(`Coordinators/${id}/username`).set(username)
+            .then(() => {setOldUsername(username)})
+        }
+        if(oldDepartment !== department){
+            firebase.database().ref(`Coordinators/${id}/department`).set(department)
+            .then(() => {setOldDepartment(department)})
+        }
         ToastAndroid.show('Data Updated', ToastAndroid.SHORT)
       };
 
@@ -76,7 +86,10 @@ export default function ChangeSettings({navigation, route}) {
                     theme={mainTheme}
                     mode='contained'
                     dark={true}
-                    disabled={name==="" || email==="" || username==="" || department===""}
+                    disabled={
+                        (name==="" || email==="" || username==="" || department==="") ||
+                        (oldName === name && oldEmail === email && oldUsername === username && oldDepartment === department)
+                    }
                 ><Text>Update</Text></Button>
             </View>
         </View>
